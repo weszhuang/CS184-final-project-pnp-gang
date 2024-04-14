@@ -34,73 +34,88 @@
   <h2>Minecraft Shaders</h2>
   <h2>Problem Description</h2>
   <p>
-    Currently, minecraft uses a simple lighting model. Each surface (block) will calculate its exposure to global light sources
-    like the sun and point light sources (tources, lava, glowstone), and calculate its block color through summing up all of its
+    Currently, minecraft uses a simple lighting model. Each surface (block) will calculate its exposure to global light
+    sources
+    like the sun and point light sources (tources, lava, glowstone), and calculate its block color through summing up
+    all of its
     light exposure and light colors and multiplying the base block texture. <br><br>
 
-    <div align="center">
-      <table style="width=100%">
-        <tr>
-          <td align="middle">
-            <img src="images/lighting-1.png" width="480px" />
-            <figcaption align="middle">No shadows, blocks under the tree looks bright</figcaption>
-        </tr>
-      </table>
-    </div> <br>
-    With Minecraft's simple lighting model, areas with limited light exposure appear very bright. Also, Minecraft doesn't have custom
-    light reflectance values for different objects. We would ideally want a ciment block to be matt, a quartz block to be somewhat shiney, 
-    and water to reflect light. Nevertheless, minecraft only has transparent property in blocks and entities. <br><br>
-    Another one of minecraft's lighting simplifications is that minecraft does not take into account what angle an object is in relation to the sun.
-    In other words, although we take into account how much light reaches an area, we do not average the dot product of the light direction and the surface normal of the block. 
-    <div align="middle">
-      <table style="width:100%">
-        <!-- Header -->
-        <tr align="center">
-          <th>
-            <b>Uniform Hemisphere Sampling</b>
-          </th>
-          <th>
-            <b>Light Sampling</b>
-          </th>
-        </tr>
-        <br>
-        <tr align="center">
-          <td>
-            <img src="images/lighting-2.png" align="middle" width="400px" />
-            <figcaption>Quartz block facing sun</figcaption>
-          </td>
-          <td>
-            <img src="images/lighting-3.png" align="middle" width="400px" />
-            <figcaption>Quartz block perpendicular to sun's direction</figcaption>
-          </td>
-        </tr>
-        <br>
-      </table>
-    </div> <br>
-    We would like to add realistic lighting to minecraft.
+  <div align="center">
+    <table style="width=100%">
+      <tr>
+        <td align="middle">
+          <img src="images/lighting-1.png" width="480px" />
+          <figcaption align="middle">No shadows, blocks under the tree looks bright</figcaption>
+      </tr>
+    </table>
+  </div> <br>
+  With Minecraft's simple lighting model, areas with limited light exposure appear very bright. Also, Minecraft doesn't
+  have custom
+  light reflectance values for different objects. We would ideally want a ciment block to be matt, a quartz block to be
+  somewhat shiney,
+  and water to reflect light. Nevertheless, minecraft only has transparent property in blocks and entities. <br><br>
+  Another one of minecraft's lighting simplifications is that minecraft does not take into account what angle an object
+  is in relation to the sun.
+  In other words, although we take into account how much light reaches an area, we do not average the dot product of the
+  light direction and the surface normal of the block.
+  <div align="middle">
+    <table style="width:100%">
+      <!-- Header -->
+      <tr align="center">
+        <th>
+          <b>Uniform Hemisphere Sampling</b>
+        </th>
+        <th>
+          <b>Light Sampling</b>
+        </th>
+      </tr>
+      <br>
+      <tr align="center">
+        <td>
+          <img src="images/lighting-2.png" align="middle" width="400px" />
+          <figcaption>Quartz block facing sun</figcaption>
+        </td>
+        <td>
+          <img src="images/lighting-3.png" align="middle" width="400px" />
+          <figcaption>Quartz block perpendicular to sun's direction</figcaption>
+        </td>
+      </tr>
+      <br>
+    </table>
+  </div> <br>
+  We would like to add realistic lighting to minecraft.
   </p>
   <h2>Goals and Deliverables</h2>
   <p>
     1. Realistic Light Attenuation. <br>
-    For sunlight, Minecraft uses linear light attenuation, which causes shaded surfaces to look much brighter than reality. 
-    We would like to make light falloff at an exponential rate. This can be achieved by squaring or cubing the sunlight exposure value
-    of a block. If a block is in a area with less sunlight, we would like that area to be much darker than original minecraft. <br><br> 
-    2. Lambertian Sunlight <br>
-    we would like to account for the angle at which an object receives sunlight. We simply take the dot product of the nomral vector of the block 
-    and the reverse direction of the sunlight. After this feature is implemented, outside a house, ceilings will look much brighter compared to
+    For sunlight, Minecraft uses linear light attenuation, which causes shaded surfaces to look much brighter than
+    reality.
+    We would like to make light falloff at an exponential rate. This can be achieved by squaring or cubing the sunlight
+    exposure value
+    of a block. If a block is in a area with less sunlight, we would like that area to be much darker than original
+    minecraft. <br><br>
+    2. Lambertian Sunlight (directional Sunlight) <br>
+    we would like to account for the angle at which an object receives sunlight. We simply take the dot product of the
+    nomral vector of the block
+    and the reverse direction of the sunlight. After this feature is implemented, outside a house, ceilings will look
+    much brighter compared to
     walls. <br><br>
-    3. Custom Light Reflective Property for blocks <br>
-    We would like to have a custom reflective class for matt objects, partially reflective objects, and fully reflective objects. 
-    This will allow us to implement reflective waters and partially reflective quartz countertops later on. <br><br>
-    4. Ray tracing <br>
-    This is a bit ambitious but we would like to be able to see a player's reflection in the waters. Depending on our hardware, we could limit the light's bounce
-    to only two bounces. We will also implement a bounding box hierarchy of the blocks so that we can efficiently calculate light intersections in logarithmic time. <br><br>
+    3. Normal Mapped Shading <br>
+    Add support for normal mapped shading with normal data read in from minecraft textures in the labpbr format. <br><br>
+    4. Displacement Mapped Shading <br>
+    Add support for displacement mapped shading with heighmap data red in from minecraft textures in the labpbr
+    format.<br><br>
+    5. Terrain Shadows <br>
+    Implement more realistic shadows cast by the sun due to blocks <br><br>
+    6. Custom Light Reflective Property for blocks <br>
+    We would like to have a custom reflective class for matt objects, partially reflective objects, and fully reflective
+    objects. This will allow us to implement reflective waters and partially reflective quartz countertops later on using
+    screen space reflections <br><br>
 
-
-    
   </p>
   <h2>Schedule</h2>
   <h2>Resources</h2>
+  <!-- https://shaderlabs.org/wiki/LabPBR_Material_Standard#Normal_Texture_(_n) -->
 
   <br><br>
 
