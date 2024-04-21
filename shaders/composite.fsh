@@ -1,5 +1,7 @@
 #version 330 compatibility
 
+#include "/include/distort.glsl"
+
 uniform vec3 sunPosition;
 uniform sampler2D colortex0;
 uniform sampler2D colortex1;
@@ -21,7 +23,7 @@ uniform mat4 shadowProjection;
 in vec2 texcoord;
 
 const float sunPathRotation = -30.0f;
-const int shadowMapResolution = 1024;
+const int shadowMapResolution = 2048;
 
 const float ambient = 0.07f;
 
@@ -31,6 +33,7 @@ float getShadow(float depth){
 	vec3 view = viewW.xyz / viewW.w;
 	vec4 world = gbufferModelViewInverse * vec4(view, 1.0f);
 	vec4 shadowSpace = shadowProjection * shadowModelView * world;
+	shadowSpace.xy = distortPosition(shadowSpace.xy);
 	vec3 sampleCoords = shadowSpace.xyz * 0.5f + 0.5f;
 	return step(sampleCoords.z - 0.001f, texture(shadowtex0, sampleCoords.xy).r);
 }
