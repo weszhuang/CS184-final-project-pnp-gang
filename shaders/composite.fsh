@@ -22,10 +22,10 @@ uniform mat4 shadowProjection;
 
 in vec2 texcoord;
 
-const float sunPathRotation = -30.0f;
+const float sunPathRotation = -40.0f;
 const int shadowMapResolution = 2048;
 
-const float ambient = 0.07f;
+const float ambient = 0.02f;
 
 float getShadow(float depth){
     vec3 clipSpace = vec3(texcoord, depth) * 2.0f - 1.0f;
@@ -38,11 +38,11 @@ float getShadow(float depth){
 	return step(sampleCoords.z - 0.001f, texture(shadowtex0, sampleCoords.xy).r);
 }
 
-// float adjustLightmapTorch(in float torch) {
-// 	const float K = 2.0f;
-// 	const float P = 5.06f;
-// 	return K * pow(torch, P);
-// }
+float adjustLightmapTorch(in float torch) {
+	const float k = 2.0f;
+	const float p = 5.06f;
+	return k * pow(torch, p);
+}
 
 float adjustLightMapSky(in float sky){
 	float sky_2 = sky * sky;
@@ -51,7 +51,7 @@ float adjustLightMapSky(in float sky){
 
 vec2 adjustLightMap(in vec2 lightMap){
 	vec2 newLightMap;
-	newLightMap.x = lightMap.x;
+	newLightMap.x = adjustLightmapTorch(lightMap.x);
 	newLightMap.y = adjustLightMapSky(lightMap.y);
 	return newLightMap;
 }
