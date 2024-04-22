@@ -1,0 +1,145 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+    <style>
+        body {
+            padding: 100px;
+            width: 1000px;
+            margin: auto;
+            text-align: left;
+            font-weight: 300;
+            font-family: 'Open Sans', sans-serif;
+            color: #121212;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-family: 'Source Sans Pro', sans-serif;
+        }
+    </style>
+    <title>CS 184/284A Final Project Milestone</title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans|Source+Sans+Pro" rel="stylesheet">
+</head>
+
+
+<body>
+
+    <h1 align="middle">CS 184/284A: Computer Graphics and Imaging, Spring 2024</h1>
+    <h1 align="middle">Final Project Milestone</h1>
+    <h2 align="middle">Brian Kim, Wesley Zhuang</h2>
+    <h2>Minecraft Shaders</h2>
+    <h2>Problem Description</h2>
+    <p>
+        Currently, Minecraft uses a simple lighting and texture model. Each surface (block) calculates its light level
+        based on
+        direct vertical exposure to the sky along with light sources such as torches. We aimed to change the sun into a
+        directional light source and add support for height and normal data in textures.
+    </p>
+
+    <h2>Progress</h2>
+    <h4>Directional Sunlight and colored lighting</h4>
+    <p>
+        Implemented directional sunlight in the form of normal shading. Also rewrote builtin minecraft lightlevel
+        handling to use lightsource colors and attenuate more realisticly.
+    </p>
+    <div align="middle">
+        <table style="width:100%">
+            <!-- Header -->
+            <tr align="center">
+                <th>
+                    <b>Vanilla</b>
+                </th>
+                <th>
+                    <b>With Shader</b>
+                </th>
+            </tr>
+            <br>
+            <tr align="center">
+                <td>
+                    <img src="images/normals_original.png" align="middle" width="400px" />
+                </td>
+                <td>
+                    <img src="images/normals_result.png" align="middle" width="400px" />
+                </td>
+            </tr>
+            <br>
+        </table>
+    </div> <br>
+    <p>The blocks are lit differently based on the angle of the sun giving much more realistic direct lighting</p>
+    <h4>Shadows</h4>
+    <p>
+        Implemented shadows using the shadowmap in optifine along with improvements to make shadows smoother and pass
+        on colors of transparent blocks.
+    </p>
+    <div align="middle">
+        <table style="width:100%">
+            <!-- Header -->
+            <tr align="center">
+                <th>
+                    <b>Without normal map</b>
+                </th>
+                <th>
+                    <b>With normal map</b>
+                </th>
+            </tr>
+            <br>
+            <tr align="center">
+                <td>
+                    <img src="images/shadows_original.png" align="middle" width="400px" />
+                </td>
+                <td>
+                    <img src="images/shadows_result.png" align="middle" width="400px" />
+                </td>
+            </tr>
+            <br>
+        </table>
+    </div> <br>
+    <p>
+        The terrain in the background looks significantly nicer with the shadows. The glass also showcases the colored
+        shadows on the ground.
+    </p>
+    <h4>Normal Mapping and Ambient Occlusion</h4>
+    <p>
+        Read in normal and ambient occlusion data from a texture in the labpbr format to make blocks appear to have more
+        depth than their geometry.
+    </p>
+    <div align="middle">
+        <table style="width:100%">
+            <!-- Header -->
+            <tr align="center">
+                <th>
+                    <b>Without normal map</b>
+                </th>
+                <th>
+                    <b>With normal map</b>
+                </th>
+            </tr>
+            <br>
+            <tr align="center">
+                <td>
+                    <img src="images/normal_map_original.png" align="middle" width="400px" />
+                </td>
+                <td>
+                    <img src="images/normal_map_result.png" align="middle" width="400px" />
+                </td>
+            </tr>
+            <br>
+        </table>
+    </div> <br>
+    <h2>Planning</h2>
+    <p>
+        We changed our plan quite a bit due to lacking scope in our original proposal. We have completed everything on
+        our new internal plan for the milestone except specular highlights.
+    </p>
+    <p>
+        Our plan moving forward is to complete the specular highlights, parllax mapped rendering, then parallax
+        occlusion mapped rendering.
+    </p>
+    <br><br>
+</body>
+
+</html>
