@@ -30,7 +30,7 @@ const int shadowMapResolution = 2048;
 const float ambient = 0.02f;
 
 float visibiliity(in sampler2D shadowMap, in vec3 sampleCoords) {
-	return step(sampleCoords.z - 0.0001f, texture(shadowMap, sampleCoords.xy).r);
+	return step(sampleCoords.z - 0.001f, texture(shadowMap, sampleCoords.xy).r);
 }
 
 vec3 transparentShadow(in vec3 sampleCoords){
