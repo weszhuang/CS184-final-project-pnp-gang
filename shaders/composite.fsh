@@ -8,6 +8,8 @@ uniform sampler2D colortex1;
 uniform sampler2D colortex2;
 uniform sampler2D depthtex0;
 uniform sampler2D shadowtex0;
+uniform sampler2D shadowtex1;
+uniform sampler2D shadowcolor0;
 
 /*
 const int colortex0Format = RGBA16F;
@@ -27,7 +29,19 @@ const int shadowMapResolution = 2048;
 
 const float ambient = 0.02f;
 
-float getShadow(float depth){
+float visibiliity(in sampler2D shadowMap, in vec3 sampleCoords) {
+	return step(sampleCoords.z - 0.0001f, texture(shadowMap, sampleCoords.xy).r);
+}
+
+vec3 transparentShadow(in vec3 sampleCoords){
+	float shadowVisibility0 = visibiliity(shadowtex0, sampleCoords);
+	float shadowVisibility1 = visibiliity(shadowtex1, sampleCoords);
+	vec4 shadowColor0 = texture(shadowcolor0, sampleCoords.xy);
+	vec3 transmittedColor = shadowColor0.rgb * (1.0f - shadowColor0.a);
+	return mix(transmittedColor * shadowVisibility1, vec3(1.0f), shadowVisibility0);
+}
+
+vec3 getShadow(float depth){
     vec3 clipSpace = vec3(texcoord, depth) * 2.0f - 1.0f;
 	vec4 viewW = gbufferProjectionInverse * vec4(clipSpace, 1.0f);
 	vec3 view = viewW.xyz / viewW.w;
@@ -35,7 +49,7 @@ float getShadow(float depth){
 	vec4 shadowSpace = shadowProjection * shadowModelView * world;
 	shadowSpace.xy = distortPosition(shadowSpace.xy);
 	vec3 sampleCoords = shadowSpace.xyz * 0.5f + 0.5f;
-	return step(sampleCoords.z - 0.001f, texture(shadowtex0, sampleCoords.xy).r);
+	return transparentShadow(sampleCoords);
 }
 
 float adjustLightmapTorch(in float torch) {
