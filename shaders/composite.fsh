@@ -114,6 +114,6 @@ void main() {
 	vec3 lightMapColor = getLightMapColor(lightMap);
 
 	float normDotL = max(dot(normal, normalize(sunPosition)), 0.0f);
-	vec3 diffuse = albedo * (lightMapColor + normDotL * getShadow(depth) + ambient);
+	vec3 diffuse = albedo * (lightMapColor + normDotL * getShadow(depth) * getShadow(depth2) + ambient);
 	color = vec4(diffuse, 1.0f);
 }
