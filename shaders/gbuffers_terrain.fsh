@@ -1,6 +1,5 @@
 #version 330 compatibility
-
-#include "include/parallax.glsl"
+#include "include/settings.glsl"
 
 uniform vec3 cameraPosition;
 uniform sampler2D lightmap;
@@ -21,6 +20,8 @@ in vec2 singleTexSize;
 layout(location = 0) out vec4 color;
 layout(location = 1) out vec4 bufNormal;
 layout(location = 2) out vec4 buflmcoord;
+
+#include "include/parallax.glsl"
 
 void main() {
 	mat3 tbnMatrix = mat3(tangent.x, bitangent.x, normal.x,
