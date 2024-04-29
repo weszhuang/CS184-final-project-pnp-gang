@@ -107,13 +107,13 @@ void main() {
 	float depth2 = texture(depthtex1, texcoord).r;
 	if (depth2 == 1.0f) {
 		color = vec4(albedo, 1.0f);
-		return;
+		 
 	}
 	vec3 normal = normalize(texture(colortex1, texcoord).rgb * 2.0f - 1.0f);
 	vec2 lightMap = texture(colortex2, texcoord).rg;
 	vec3 lightMapColor = getLightMapColor(lightMap);
 
 	float normDotL = max(dot(normal, normalize(sunPosition)), 0.0f);
-	vec3 diffuse = albedo * (lightMapColor + normDotL * getShadow(depth) + ambient);
+	vec3 diffuse = albedo * (lightMapColor + normDotL * getShadow(depth2) + ambient);
 	color = vec4(diffuse, 1.0f);
 }
