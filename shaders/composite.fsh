@@ -112,8 +112,13 @@ void main() {
 	vec3 normal = normalize(texture(colortex1, texcoord).rgb * 2.0f - 1.0f);
 	vec2 lightMap = texture(colortex2, texcoord).rg;
 	vec3 lightMapColor = getLightMapColor(lightMap);
-
+	vec3 shadow;
+	if (depth != depth2) {
+		shadow = getShadow(depth) * getShadow(depth2);
+	} else {
+		shadow = getShadow(depth);
+	}
 	float normDotL = max(dot(normal, normalize(sunPosition)), 0.0f);
-	vec3 diffuse = albedo * (lightMapColor + normDotL * getShadow(depth) * getShadow(depth2) + ambient);
+	vec3 diffuse = albedo * (lightMapColor + normDotL * shadow + ambient);
 	color = vec4(diffuse, 1.0f);
 }
