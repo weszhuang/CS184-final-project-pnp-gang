@@ -1,12 +1,13 @@
 #version 330 compatibility
-
+uniform vec3 cameraPosition;  
+uniform mat4 gbufferModelView;
 in vec4 at_tangent;
-
 out vec2 lmcoord;
 out vec2 texcoord;
 out vec4 glcolor;
 out vec3 normal;
 out vec3 bitangent, tangent;
+out vec3 vertex_position; 
 
 void main() {
 	gl_Position = ftransform();
@@ -17,4 +18,5 @@ void main() {
 	bitangent = normalize(gl_NormalMatrix * cross(at_tangent.xyz, gl_Normal.xyz) * at_tangent.w);
 	tangent  = normalize(gl_NormalMatrix * at_tangent.xyz);
 	normal = gl_NormalMatrix * gl_Normal;
+	vertex_position =  gl_Position.xyz;
 }
