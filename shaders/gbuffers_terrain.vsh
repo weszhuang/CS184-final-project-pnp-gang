@@ -27,7 +27,7 @@ void main() {
 	mat3 tbnMatrix = mat3(tangent.x, bitangent.x, normal.x,
 							tangent.y, bitangent.y, normal.y,
 							tangent.z, bitangent.z, normal.z);
-	viewDir = tbnMatrix * normalize((gl_ModelViewMatrix * gl_Vertex).xyz);
+	viewDir = tbnMatrix * (gl_ModelViewMatrix * gl_Vertex).xyz;
 	
 	vec2 midCoord = (gl_TextureMatrix[0] *  mc_midTexCoord).xy;
 	vec2 halfSize      = abs(texcoord - midCoord);
