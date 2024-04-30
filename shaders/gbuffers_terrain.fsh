@@ -124,10 +124,8 @@ void main() {
 	color.rgb *= ambientOcclusion * ambientOcclusion;
 
 	vec3 normalWorld = clamp(normalize(normalMap * tbnMatrix), vec3(-1.0), vec3(1.0));
-	vec2 lightMap = lmcoord;
-	vec3 lightMapColor = getLightMapColor(lightMap);
+	vec3 lightMapColor = getLightMapColor(lmcoord);
 	float normDotL = max(dot(normalWorld, normalize(sunPosition)), 0.0f);
-	// color.rgb *= (lightMapColor + normDotL * getShadow(shadowPos) + ambient);
-	color.rgb *= (normDotL * getShadow(shadowPos) + ambient);
+	color.rgb *= (lightMapColor + normDotL * getShadow(shadowPos) + ambient);
 	color.rgb = pow(color.rgb, vec3(1.0f / 2.2f));
 }

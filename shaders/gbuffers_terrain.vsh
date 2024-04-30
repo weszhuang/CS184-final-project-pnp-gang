@@ -24,7 +24,7 @@ void main() {
 	gl_Position = ftransform();
 	texcoord = (gl_TextureMatrix[0] * gl_MultiTexCoord0).xy;
 	lmcoord = (gl_TextureMatrix[1] * gl_MultiTexCoord1).xy;
-	lmcoord = (lmcoord * 33.05f / 32.0f) - (1.05f / 32.0f);
+	lmcoord = clamp((lmcoord * 33.05f / 32.0f) - (1.05f / 32.0f), vec2(0.0), vec2(1.0));
 	glcolor = gl_Color;
 	bitangent = normalize(gl_NormalMatrix * cross(at_tangent.xyz, gl_Normal.xyz) * at_tangent.w);
 	tangent  = normalize(gl_NormalMatrix * at_tangent.xyz);
