@@ -30,8 +30,8 @@
     <h1 align="middle">CS 184/284A: Computer Graphics and Imaging, Spring 2024</h1>
     <h1 align="middle">Final Project Report</h1>
     <h2 align="middle">Brian Kim, Wesley Zhuang, Yuxiang Jiang, Mark Nguyen</h2>
-    <h2>Minecraft Shaders</h2>
-    <h2>Abstract</h2>
+    <h1 align="middle">Minecraft Shaders</h1>
+    <h2 align="middle">Abstract</h2>
     <p>
         Minecraft was designed to be a lightweight game and was designed to have very simple textures and lighting. 
         For example, the game does not take advantage of the normal map of each block texture, resulting in a flat texture
@@ -42,8 +42,8 @@
         We have used the normal maps of block textures and parallelex mapping to add depth of field to the textures of blocks. 
         Finally, we used specular highlights to make the reflection of sunlight in certain blocks more shiny and realistic.
     </p>
-    <h2>Technical approach</h2>
-        <h3>Normal Shading</h3>
+    <h2 align="middle">Technical approach</h2>
+        <h3 >Normal Shading</h3>
         <p>Normal shading uses the normal vector of the surface of a block and the suns direction to calculate the contribution of the sunlight in each block.
         if the surface normal is facing the sun, the sunlight contribution of the block will be close to one. If a block is facing away from the sun (at 90 degrees),
         the sunlight contribution will be zero. </p>
@@ -194,8 +194,8 @@
         <p>
             [TODO]
         </p>
-        <h3>Problems Encountered & Our Solutions</h3>
-        <h3>Lessons Learned</h3>
+        <h3 align="middle">Problems Encountered & Our Solutions</h3>
+        <h3 align="middle">Lessons Learned</h3>
         <p>
             Overall, we were able to learn how to apply concepts we learned in class (Blinn Phong reflection, lighting, and glsl) 
             and applying it to a real world video game. There were optifine primitives we had to read up on, and we had to learn how to translate 
@@ -205,7 +205,7 @@
             real world problems. 
 
         </p>
-    <h2>Results</h2>
+    <h2 align="middle">Results</h2>
     <h3 style = "padding-bottom: 0px;">Normal Lighting</h3>
     <div align="middle">
         <table style="width:100%">
@@ -228,11 +228,15 @@
             </tr>
         </table>
     </div>
-    <h2>References</h2>
+    <h2 align="middle">References</h2>
     <p>
-        https://optifine.readthedocs.io/shaders_dev/uniforms.html#general-uniforms
+        In order to get started programming our own shaders in Minecraft, we reference the Developer Resource through <a href="https://shaderlabs.org/wiki/Getting_Started">ShaderLABS</a>, a community where shaders
+        information about Minecraft is shared. Through this, we also followed a <a href="https://github.com/saada2006/MinecraftShaderProgramming/tree/master"> tutorial </a> to get familiar with programming with OpenGL on Minecraft.  
+
+        <br><br>Minecraft renders its graphics in various pipelines.  Here we decided to follow the <a href=""https://pastebin.com/aB5MJ7aN">Optifine Pipeline</a> which describes the order in which the game is rendered in (ie, terrain, entities, sunlight, shadows). 
+        Moreover, the document for Optifine can be found  <a href="https://optifine.readthedocs.io/shaders_dev.html">here</a>. 
     </p>
-    <h2>Contributions from each team member</h2>
+    <h2 align="middle">Contributions from each team member</h2>
     <h3>Brian Kim</h3>
     <h3>Wesley Zhuang</h3>
     <h3>Yuxiang Jiang</h3>
