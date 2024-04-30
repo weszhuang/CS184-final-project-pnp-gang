@@ -44,6 +44,51 @@
     </p>
     <h2>Technical approach</h2>
         <h3>Normal Shading</h3>
+        <p>Normal shading uses the normal vector of the surface of a block and the suns direction to calculate the contribution of the sunlight in each block.
+        if the surface normal is facing the sun, the sunlight contribution of the block will be close to one. If a block is facing away from the sun (at 90 degrees),
+        the sunlight contribution will be zero. </p>
+        <div align="middle">
+            <table style="width:100%">
+               
+                <tr align="center">
+                    <td>
+                        <img src="images/normalshading.png" align="middle" width="500px" />
+                    </td>
+                </tr>
+                <br>
+            </table>
+        </div>
+        <p>
+            We added a small bit of ambient light to make sure that blocks which face away from the sun doesn't look completly dark. 
+        </p>
+        <div align="middle">
+            <table style="width:100%">
+                <tr align="center">
+                    <td>
+                        <img src="images/normalshading-1.png" align="middle" width="800px" />
+                    </td>
+                </tr>
+                <br>
+            </table>
+        </div>
+        <p>
+            Simply put, we were able to extract the world coordiante, texture coordinate, and the normal of the surface from the vertex shader. 
+            In the fragment shader, we can extract the texture of the biome and put the normal vector in the 0~1 range. 
+        </p>
+        <div align="middle">
+            <table style="width:100%">
+                <tr align="center">
+                    <td>
+                        <img src="images/normalshading-2.png" align="middle" width="800px" />
+                    </td>
+                </tr>
+                <br>
+            </table>
+        </div>
+        <p>
+            We finally obtain the texture of the sample coordinate and we factor in the sun's contribution (normdotL), into the
+            overall light calculation.
+        </p>
         <h3>Specular Highlights</h3>
         <h3>Shadows</h3>
         <h3>Normal Mapping</h3>
