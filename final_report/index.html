@@ -90,6 +90,24 @@
             overall light calculation.
         </p>
         <h3>Specular Highlights</h3>
+        <div align="middle">
+            <table style="width:100%">
+                <tr align="center">
+                    <td>
+                        <img src="images/specular-1.png" align="middle" width="500px" />
+                    </td>
+                </tr>
+                <br>
+            </table>
+        </div>
+        <p>
+            The goal of Specular Highlights is that objects will look brighter from certain angles and this brightness will diminish as you move away.
+            We achieve this through taking the dot product between the view vector (ray pointing to the eye from the sample) and the light reflected off
+            of the sample point. We can make this effect more pronounced by having a large shinyness factor. The value of the dot product multiplying will increase exponentially.
+            We also take into account the matness of the object. We won't expect wood to absorb light like what glass would.
+
+        </p>
+        <p>[Todo]</p>
         <h3>Shadows</h3>
         <p>
             To generate shadows, we first take the clip space coordinates that includes the depth texture taken from the eyes point of view, 
@@ -158,6 +176,23 @@
             Realize that shadowVisibility1 will be zero if the object is not transparent. 
         </p>
         <h3>Normal Mapping</h3>
+        <div align="middle">
+            <table style="width:100%">
+                <tr align="center">
+                    <td>
+                        <img src="images/normalvec-1.png" align="middle" width="800px" />
+                    </td>
+                </tr>
+                <br>
+            </table>
+        </div>
+        <p>
+            [TODO]
+        </p>
+        <h3>Parallax Occlusion Mapping</h3>
+        <p>
+            [TODO]
+        </p>
     <h2>Results</h2>
     <h2>References</h2>
     <h2>Contributions from each team member</h2>
