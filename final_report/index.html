@@ -140,6 +140,7 @@
             </table>
         </div>
         <p>
+            Shadows used in minecraft often don't account for falloff at the edges. The mostly look black and white.  
             Ideally, we want the shadow to be realistic (not black and white). We would ideally like the shadow's color to blend in with the background
             along the edges. To achieve this, we use a tactic similar to supersampling. When we sample shadow texture, we sample in a small box (shadow samples x shadow samples) wide. 
             We then average the colors, giving us a smooth shadow transition.
@@ -193,9 +194,49 @@
         <p>
             [TODO]
         </p>
+        <h3>Problems Encountered & Our Solutions</h3>
+        <h3>Lessons Learned</h3>
+        <p>
+            Overall, we were able to learn how to apply concepts we learned in class (Blinn Phong reflection, lighting, and glsl) 
+            and applying it to a real world video game. There were optifine primitives we had to read up on, and we had to learn how to translate 
+            between object space, world space, shadow space, and tangent space. We also learned to critically think about shading problems and
+            create solutions on how to make the scene look good. One example of this would be accounting for the shadow edge falloff, so that the shadows
+            don't look blocky. We took a good look at the materials learned in class and learned to use other frameworks to apply our knowledge into 
+            real world problems. 
+
+        </p>
     <h2>Results</h2>
+    <h3 style = "padding-bottom: 0px;">Normal Lighting</h3>
+    <div align="middle">
+        <table style="width:100%">
+            <!-- Header -->
+            <tr align="center">
+                <td>
+                    <img src="images/normals_original.png" align="middle" width="500px" />
+                </td>
+                <td>
+                    <img src="images/normals_result.png" align="middle" width="500px" />
+                </td>
+            </tr>
+            <tr align="center">
+                <th>
+                    <b>Vanilla</b>
+                </th>
+                <th>
+                    <b>With Shader</b>
+                </th>
+            </tr>
+        </table>
+    </div>
     <h2>References</h2>
+    <p>
+        https://optifine.readthedocs.io/shaders_dev/uniforms.html#general-uniforms
+    </p>
     <h2>Contributions from each team member</h2>
+    <h3>Brian Kim</h3>
+    <h3>Wesley Zhuang</h3>
+    <h3>Yuxiang Jiang</h3>
+    <h3>Mark Nguyen</h3>
 
 </body>
 
