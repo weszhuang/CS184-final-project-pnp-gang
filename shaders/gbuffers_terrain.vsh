@@ -15,6 +15,7 @@ out vec4 glcolor;
 out vec3 normal;
 out vec3 bitangent, tangent;
 out vec3 viewDir;
+out vec2 screenCoord;
 out vec4 textureBounds;
 out vec2 singleTexSize;
 out vec4 shadowPos;
@@ -34,7 +35,7 @@ void main() {
 							tangent.z, bitangent.z, normal.z);
 	vec4 viewPos = gl_ModelViewMatrix * gl_Vertex;
 	viewDir = tbnMatrix * (viewPos).xyz;
-
+	screenCoord = viewPos.xy;
 	vec2 midCoord = (gl_TextureMatrix[0] *  mc_midTexCoord).xy;
 	vec2 halfSize      = abs(texcoord - midCoord);
 	textureBounds = vec4(midCoord.xy - halfSize, midCoord.xy + halfSize);

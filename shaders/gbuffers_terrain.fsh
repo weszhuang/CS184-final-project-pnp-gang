@@ -26,6 +26,7 @@ in vec4 glcolor;
 in vec3 normal;
 in vec3 bitangent, tangent;
 in vec3 viewDir;
+in vec2 screenCoord;
 in vec4 textureBounds;
 in vec2 singleTexSize;
 in vec4 shadowPos;
@@ -103,14 +104,22 @@ vec3 computeSpecular(vec3 lightDirTS, vec3 viewDirTS, vec3 normalDirTS, vec2 spe
 	return lightColor * specularIntensity;
 }
 
-/* DRAWBUFFERS:012 */
+/* DRAWBUFFERS:0 */
 layout(location = 0) out vec4 color;
-layout(location = 1) out vec4 bufNormal;
-layout(location = 2) out vec4 buflmcoord;
 
 #include "include/parallax.glsl"
 
 void main() {
+	#ifdef SPLIT_DEMO
+	if (screenCoord.x < 0.0){
+		color = texture(gtexture, texcoord) * glcolor;
+		color *= texture(lightmap, lmcoord);
+		if (color.a < 0.1) {
+			discard;
+		}
+		return;
+	}
+	#endif
 	mat3 tbnMatrix = mat3(tangent.x, bitangent.x, normal.x,
 							tangent.y, bitangent.y, normal.y,
 							tangent.z, bitangent.z, normal.z);

@@ -2,3 +2,5 @@
 #define PARALLAX 2
 #define PARALLAX_DEPTH 0.25
 #define PARALLAX_LAYERS 128
+
+// #define SPLIT_DEMO
