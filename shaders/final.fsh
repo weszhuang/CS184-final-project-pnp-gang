@@ -5,9 +5,6 @@ uniform sampler2D colortex0;
 in vec2 texcoord;
 
 void main() {
-    // Sample the color
-//    vec3 Color = pow(texture(colortex0, texcoord).rgb, vec3(1.0f / 2.2f));
-   vec3 Color = texture(colortex0, texcoord).rgb;
    // Output the color
-   gl_FragColor = vec4(Color, 1.0f);
+   gl_FragColor = vec4(texture(colortex0, texcoord).rgb, 1.0f);
 }
