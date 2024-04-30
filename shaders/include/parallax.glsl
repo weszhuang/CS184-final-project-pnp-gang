@@ -18,7 +18,7 @@ vec2 parallaxMapping(in vec2 texCoord, in vec3 viewDir, in sampler2D depthMap, i
     }
     float layerDepth = 1.0 / PARALLAX_LAYERS;
     float currentDepthLayer = 0.0;
-    vec2 deltaTexCoords = ((viewDir.xy / viewDir.z) * PARALLAX_DEPTH) / PARALLAX_LAYERS;
+    vec2 deltaTexCoords = ((viewDir.xy / viewDir.z) * PARALLAX_DEPTH * 0.025) / PARALLAX_LAYERS;
     while(currentDepthLayer < currentDepthValue){
         // This line is bad performance. Consider using denormalized atlas coordinates instead.
         currentTexCoords = textureBounds.st + mod(currentTexCoords - deltaTexCoords - textureBounds.st, textureSize);
@@ -35,7 +35,7 @@ vec2 parallaxMapping(in vec2 texCoord, in vec3 viewDir, in sampler2D depthMap, i
     }
     float layerDepth = 1.0 / PARALLAX_LAYERS;
     float currentDepthLayer = 0.0;
-    vec2 deltaTexCoords = ((viewDir.xy / viewDir.z) * PARALLAX_DEPTH) / PARALLAX_LAYERS;
+    vec2 deltaTexCoords = ((viewDir.xy / viewDir.z) * PARALLAX_DEPTH * 0.025) / PARALLAX_LAYERS;
     while(currentDepthLayer < currentDepthValue){
         // This line is bad performance. Consider using denormalized atlas coordinates instead.
         currentTexCoords = textureBounds.st + mod(currentTexCoords - deltaTexCoords - textureBounds.st, textureSize);
