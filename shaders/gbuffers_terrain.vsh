@@ -4,7 +4,6 @@ uniform ivec2 atlasSize;
 uniform mat4 gbufferModelViewInverse;
 uniform mat4 shadowModelView;
 uniform mat4 shadowProjection;
-uniform vec3 shadowLightPosition;
 
 in vec4 at_tangent;
 in vec4 mc_midTexCoord;

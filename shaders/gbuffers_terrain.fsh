@@ -8,17 +8,10 @@ uniform sampler2D lightmap;
 uniform sampler2D gtexture;
 uniform sampler2D normals;
 uniform sampler2D specular;
-uniform sampler2D depthtex0;
-uniform sampler2D depthtex1;
 uniform sampler2D shadowtex0;
 uniform sampler2D shadowtex1;
 uniform sampler2D shadowcolor0;
 uniform sampler2D noisetex;
-
-uniform mat4 gbufferProjectionInverse;
-uniform mat4 gbufferModelViewInverse;
-uniform mat4 shadowModelView;
-uniform mat4 shadowProjection;
 
 in vec2 lmcoord;
 in vec2 texcoord;
