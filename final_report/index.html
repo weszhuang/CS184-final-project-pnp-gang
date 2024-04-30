@@ -91,6 +91,72 @@
         </p>
         <h3>Specular Highlights</h3>
         <h3>Shadows</h3>
+        <p>
+            To generate shadows, we first take the clip space coordinates that includes the depth texture taken from the eyes point of view, 
+            and convert it to clipspace -> view space -> worldspace -> shadowspace. 
+        </p>
+        <div align="middle">
+            <table style="width:100%">
+                <tr align="center">
+                    <td>
+                        <img src="images/shadows-1.png" align="middle" width="800px" />
+                    </td>
+                </tr>
+                <br>
+            </table>
+        </div>
+        <p>
+            We use lots of optifine primitives to go from texture to shadowspace. Depth texture from the eye's point of view is given by optifine
+            as depth. We then multiply it by the inverse projection matrix and divide by vieW.w to get to viewspace. To get to worldspace we multiply by
+            the gbufferModelViewInverse. Using the shadowView and shadowProjection matrix, we can transfer worldspace coordinates to shadow space. 
+            We make sure the samplecoords for the shadow stays in the (0, 1) range.
+        </p>
+        <div align="middle">
+            <table style="width:100%">
+                <tr align="center">
+                    <td>
+                        <img src="images/shadows-2.png" align="middle" width="800px" />
+                    </td>
+                </tr>
+                <br>
+            </table>
+        </div>
+        <p>
+            Ideally, we want the shadow to be realistic (not black and white). We would ideally like the shadow's color to blend in with the background
+            along the edges. To achieve this, we use a tactic similar to supersampling. When we sample shadow texture, we sample in a small box (shadow samples x shadow samples) wide. 
+            We then average the colors, giving us a smooth shadow transition.
+        </p>
+        <div align="middle">
+            <table style="width:100%">
+                <tr align="center">
+                    <td>
+                        <img src="images/shadows-3.png" align="middle" width="800px" />
+                    </td>
+                </tr>
+                <br>
+            </table>
+        </div>
+        <p>
+            Another factor we take into account is the distance of the shadow in relation to the player. We calculate the centerDistance, 
+            which is the distance of the shadow coordinate to the player and distort the position in a way that the shadows get smaller as they get
+            further away from the player. 
+        </p>
+        <div align="middle">
+            <table style="width:100%">
+                <tr align="center">
+                    <td>
+                        <img src="images/shadows-4.png" align="middle" width="800px" />
+                    </td>
+                </tr>
+                <br>
+            </table>
+        </div>
+        <p>
+            The final consideration for shadows is transparent objects. We want the shadow to be textured differently (combine some colors from the environment)
+            if the blocks causing the shadodw are transparent. Optifine gives us shadowtex1, which only includes shadow textures for non-transparent blocks. 
+            We can also sample the block color with the texture of the shadow color. We can take a mix of the transmitted color and the original shadow color.
+            Realize that shadowVisibility1 will be zero if the object is not transparent. 
+        </p>
         <h3>Normal Mapping</h3>
     <h2>Results</h2>
     <h2>References</h2>
