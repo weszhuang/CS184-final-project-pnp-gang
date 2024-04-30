@@ -102,23 +102,25 @@ vec3 getLightMapColor(in vec2 lightMap){
 layout(location = 0) out vec4 color;
 
 void main() {
-	vec3 albedo = pow(texture(colortex0, texcoord).rgb, vec3(2.2f));
-	float depth = texture(depthtex0, texcoord).r;
-	float depth2 = texture(depthtex1, texcoord).r;
-	if (depth2 == 1.0f) {
-		color = vec4(albedo, 1.0f);
-		return;
-	}
-	vec3 normal = normalize(texture(colortex1, texcoord).rgb * 2.0f - 1.0f);
-	vec2 lightMap = texture(colortex2, texcoord).rg;
-	vec3 lightMapColor = getLightMapColor(lightMap);
-	vec3 shadow;
-	if (depth != depth2) {
-		shadow = getShadow(depth) * getShadow(depth2);
-	} else {
-		shadow = getShadow(depth);
-	}
-	float normDotL = max(dot(normal, normalize(sunPosition)), 0.0f);
-	vec3 diffuse = albedo * (lightMapColor + normDotL * shadow + ambient);
-	color = vec4(diffuse, 1.0f);
+	color = texture(colortex0, texcoord);
+	// vec3 albedo = pow(texture(colortex0, texcoord).rgb, vec3(2.2f));
+	// // vec3 albedo = texture(colortex0, texcoord).rgb;
+	// float depth = texture(depthtex0, texcoord).r;
+	// float depth2 = texture(depthtex1, texcoord).r;
+	// if (depth2 == 1.0f) {
+	// 	color = vec4(albedo, 1.0f);
+	// 	return;
+	// }
+	// vec3 normal = normalize(texture(colortex1, texcoord).rgb * 2.0f - 1.0f);
+	// vec2 lightMap = texture(colortex2, texcoord).rg;
+	// vec3 lightMapColor = getLightMapColor(lightMap);
+	// vec3 shadow;
+	// if (depth != depth2) {
+	// 	shadow = getShadow(depth) * getShadow(depth2);
+	// } else {
+	// 	shadow = getShadow(depth);
+	// }
+	// float normDotL = max(dot(normal, normalize(sunPosition)), 0.0f);
+	// vec3 diffuse = albedo * (lightMapColor + normDotL * shadow + ambient);
+	// color = vec4(diffuse, 1.0f);
 }

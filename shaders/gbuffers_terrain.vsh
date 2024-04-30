@@ -1,8 +1,13 @@
 #version 330 compatibility
 
 uniform ivec2 atlasSize;
+uniform mat4 gbufferModelViewInverse;
+uniform mat4 shadowModelView;
+uniform mat4 shadowProjection;
+uniform vec3 shadowLightPosition;
 
 in vec4 at_tangent;
+in vec4 mc_midTexCoord;
 
 out vec2 lmcoord;
 out vec2 texcoord;
@@ -12,8 +17,8 @@ out vec3 bitangent, tangent;
 out vec3 viewDir;
 out vec4 textureBounds;
 out vec2 singleTexSize;
-
-attribute vec4 mc_midTexCoord;
+out vec4 shadowPos;
+#include "include/distort.glsl"
 
 void main() {
 	gl_Position = ftransform();
@@ -27,10 +32,16 @@ void main() {
 	mat3 tbnMatrix = mat3(tangent.x, bitangent.x, normal.x,
 							tangent.y, bitangent.y, normal.y,
 							tangent.z, bitangent.z, normal.z);
-	viewDir = tbnMatrix * (gl_ModelViewMatrix * gl_Vertex).xyz;
-	
+	vec4 viewPos = gl_ModelViewMatrix * gl_Vertex;
+	viewDir = tbnMatrix * (viewPos).xyz;
+
 	vec2 midCoord = (gl_TextureMatrix[0] *  mc_midTexCoord).xy;
 	vec2 halfSize      = abs(texcoord - midCoord);
 	textureBounds = vec4(midCoord.xy - halfSize, midCoord.xy + halfSize);
 	singleTexSize = halfSize * 2.0;
+
+	vec4 playerPos = gbufferModelViewInverse * viewPos;
+	shadowPos = shadowProjection * (shadowModelView * playerPos);
+	shadowPos.xy = distortPosition(shadowPos.xy);
+	shadowPos.xyz = shadowPos.xyz * 0.5 + 0.5;
 }
