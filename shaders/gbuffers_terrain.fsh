@@ -3,10 +3,11 @@
 
 uniform vec3 cameraPosition;
 uniform vec3 sunPosition;
+
 uniform sampler2D lightmap;
 uniform sampler2D gtexture;
 uniform sampler2D normals;
-// uniform sampler2D specular;
+uniform sampler2D specular;
 uniform sampler2D depthtex0;
 uniform sampler2D depthtex1;
 uniform sampler2D shadowtex0;
@@ -34,6 +35,7 @@ const int shadowMapResolution = 2048;
 const int noiseTextureResolution = 64;
 
 const float ambient = 0.02f;
+const vec3 dayLight = vec3(255, 160, 80) * 3.0 / 255.0;
 
 float visibiliity(in sampler2D shadowMap, in vec3 sampleCoords) {
 	return step(sampleCoords.z - 0.001f, texture(shadowMap, sampleCoords.xy).r);
@@ -94,6 +96,13 @@ vec3 getLightMapColor(in vec2 lightMap){
 	vec3 lightMapLighting = torchColor * lightMap.x + skyColor * lightMap.y;
 	return lightMapLighting;
 }
+
+vec3 computeSpecular(vec3 lightDirTS, vec3 viewDirTS, vec3 normalDirTS, vec2 specularInfo, vec3 lightColor){
+	vec3 reflectDirTS = reflect(lightDirTS, normalDirTS);
+	float specularIntensity = specularInfo.g * pow(max(dot(reflectDirTS, viewDirTS), 0.01), specularInfo.r * 64.0);
+	return lightColor * specularIntensity;
+}
+
 /* DRAWBUFFERS:012 */
 layout(location = 0) out vec4 color;
 layout(location = 1) out vec4 bufNormal;
@@ -125,7 +134,11 @@ void main() {
 
 	vec3 normalWorld = clamp(normalize(normalMap * tbnMatrix), vec3(-1.0), vec3(1.0));
 	vec3 lightMapColor = getLightMapColor(lmcoord);
-	float normDotL = max(dot(normalWorld, normalize(sunPosition)), 0.0f);
-	color.rgb *= (lightMapColor + normDotL * getShadow(shadowPos) + ambient);
+	vec3 sunDirWorld = normalize(sunPosition);
+	float normDotL = max(dot(normalWorld, sunDirWorld), 0.0f);
+	// Specular lighting
+	vec2 specularInfo = texture(specular, newCoord).rg;
+	vec3 specular = dayLight * computeSpecular(normalize(tbnMatrix * sunDirWorld), normalize(viewDir), normalMap, specularInfo, dayLight);
+	color.rgb *= (lightMapColor + (normDotL + specular) * getShadow(shadowPos) + ambient);
 	color.rgb = pow(color.rgb, vec3(1.0f / 2.2f));
 }
