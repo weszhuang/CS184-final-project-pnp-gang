@@ -177,6 +177,31 @@
             Realize that shadowVisibility1 will be zero if the object is not transparent. 
         </p>
         <h3>Normal Mapping</h3>
+            Normal Mapping is a trick to make surfaces look more realistic. Take bricks for example, its surface is quite rough and bumpy, and there's lots of small cracks and holes on it. It will be insufficient to use a  per-surface normal to model this, instead, we use the per-fragment normal map privided by <a href="https://www.curseforge.com/minecraft/texture-packs/vanilla-pbr">Vanilla PBR</a> resource under the LabPBR Material Standard. Optifine will read in normal maps for each kind of blocks automatically for our use.
+        <div align="middle">
+            <table style="width:100%">
+                <tr align="center">
+                    <td>
+                        <img src="images/normal_mapping_surfaces.png" align="middle" width="600px" />
+                    </td>
+                </tr>
+                <br>
+            </table>
+        </div>
+        In OpenGL, normal vectors in normal maps are expressed in tangent space, which is a space local to the surface of a triangle. This relative coordinate system allows normal mapping to be correctly applied no matter the direction of underlying surface. After we read in the normal vectors and construct TBN matrix(T, B, N as row vectors), we can transform these normal vectors into world space and do light calculation.
+        <div align="middle">
+            <table style="width:100%">
+                <tr align="center">
+                    <td>
+                        <img src="images/normal_mapping_tbn_vectors.png" align="middle" width="300px" />
+                        <figcaption align="middle">Tangent space(N is normal vector of surface)</figcaption>
+                    </td>
+                </tr>
+                <br>
+            </table>
+        </div>
+    
+    
         <div align="middle">
             <table style="width:100%">
                 <tr align="center">
