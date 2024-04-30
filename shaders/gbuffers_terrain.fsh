@@ -35,7 +35,7 @@ const int shadowMapResolution = 2048;
 const int noiseTextureResolution = 64;
 
 const float ambient = 0.02f;
-const vec3 dayLight = vec3(255, 160, 80) * 3.0 / 255.0;
+const vec3 dayLight = vec3(255, 160, 80) * 1.2 / 255.0;
 
 float visibiliity(in sampler2D shadowMap, in vec3 sampleCoords) {
 	return step(sampleCoords.z - 0.001f, texture(shadowMap, sampleCoords.xy).r);
@@ -99,7 +99,7 @@ vec3 getLightMapColor(in vec2 lightMap){
 
 vec3 computeSpecular(vec3 lightDirTS, vec3 viewDirTS, vec3 normalDirTS, vec2 specularInfo, vec3 lightColor){
 	vec3 reflectDirTS = reflect(lightDirTS, normalDirTS);
-	float specularIntensity = specularInfo.g * pow(max(dot(reflectDirTS, viewDirTS), 0.01), specularInfo.r * 64.0);
+	float specularIntensity = 3.0 * specularInfo.g * pow(max(dot(reflectDirTS, viewDirTS), 0.01), specularInfo.r * 64.0);
 	return lightColor * specularIntensity;
 }
 
