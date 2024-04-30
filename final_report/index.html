@@ -213,10 +213,10 @@
                 <!-- Header -->
                 <tr align="center">
                     <td>
-                        <img src="images/result_shadow_glass_v.png" align="middle" width="500px" />
+                        <img src="images/result_shadow_glass_v.png" align="middle" width="450px" />
                     </td>
                     <td>
-                        <img src="images/result_shadow_glass_s.png" align="middle" width="500px" />
+                        <img src="images/result_shadow_glass_s.png" align="middle" width="450px" />
                     </td>
                 </tr>
                 <tr align="center">
@@ -239,18 +239,10 @@
                 <!-- Header -->
                 <tr align="center">
                     <td>
-                        <img src="images/result_shadow_lake_v.png" align="middle" width="500px" />
+                        <img src="images/result_shadow_water_v.png" align="middle" width="450px" />
                     </td>
                     <td>
-                        <img src="images/result_shadow_lake_s.png" align="middle" width="500px" />
-                    </td>
-                </tr>
-                <tr align="center">
-                    <td>
-                        <img src="images/result_shadow_water_v.png" align="middle" width="500px" />
-                    </td>
-                    <td>
-                        <img src="images/result_shadow_water_s.png" align="middle" width="500px" />
+                        <img src="images/result_shadow_water_s.png" align="middle" width="450px" />
                     </td>
                 </tr>
                 <tr align="center">
@@ -263,22 +255,19 @@
                 </tr>
             </table>
         </div>
-        <p>We also incorporated shadows in water. From the shaders images, you can see the shadows from the plants and ledges underneath the ocean surface. When you are underneath the water surface,
-            the shadows of sea plants become more apparent - look closely and you can even see the shadow of the fish. As usual, the vanilla version of Minecraft doesn't support shadows seen in the vanilla images. 
+        <p>We also incorporated shadows in water. When you are underneath the water surface you will see the shadows of sea plants and ledges - look closely and you can even see the shadow of the fish. As usual, the vanilla version of Minecraft doesn't support shadows seen in the vanilla images. 
         </p>
     <h3 style = "padding-bottom: 0px;">Normal Lighting</h3>
 
-  
-    
     <div align="middle">
         <table style="width:100%">
             <!-- Header -->
             <tr align="center">
                 <td>
-                    <img src="images/result_normal_v.png" align="middle" width="500px" />
+                    <img src="images/result_normal_v.png" align="middle" width="450px" />
                 </td>
                 <td>
-                    <img src="images/result_normal_s.png" align="middle" width="500px" />
+                    <img src="images/result_normal_s.png" align="middle" width="450px" />
                 </td>
             </tr>
             <tr align="center">
@@ -294,6 +283,30 @@
     <p>With normal shading, blocks facing away from the sun are darker than blocks facing towards the sun. As seen, the back of the house is darker as it does not get direct sunlight as opposed
         from the blocks on the mountain. In the vanilla version, there is no normal lighting, therefore blocks get the same color.
     </p>
+    <h3 style = "padding-bottom: 0px;">specular highlights +  parallelex mapping [insert image below]</h3>
+    
+    <div align="middle">
+        <table style="width:100%">
+            <!-- Header -->
+            <tr align="center">
+                <td>
+                    <img src="images/temp.png" align="middle" width="500px" />
+                </td>
+                <td>
+                    <img src="images/temp.png" align="middle" width="500px" />
+                </td>
+            </tr>
+            <tr align="center">
+                <th>
+                    <b>Vanilla</b>
+                </th>
+                <th>
+                    <b>With Shader</b>
+                </th>
+            </tr>
+        </table>
+    </div>
+    <p>Blocks in minecraft can appear to be flat, therefore we added parallelex mapping which adds depth to the blocks. Moreover, specular highlights adds a shin to objects that should be reflective.</p>
     <h2 align="middle">References</h2>
     <p>
         In order to get started programming our own shaders in Minecraft, we reference the Developer Resource through <a href="https://shaderlabs.org/wiki/Getting_Started">ShaderLABS</a>, a community where shaders
