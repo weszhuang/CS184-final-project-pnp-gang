@@ -182,16 +182,9 @@
             <table style="width:100%">
                 <tr align="center">
                     <td>
-                        <img src="images/normal_mapping_surfaces.png" align="middle" width="600px" />
+                        <img src="images/normal_mapping_surfaces.png" align="middle" width="500px" />
                     </td>
-                </tr>
-                <br>
-            </table>
-        </div>
-        In OpenGL, normal vectors in normal maps are expressed in tangent space, which is a space local to the surface of a triangle. This relative coordinate system allows normal mapping to be correctly applied no matter the direction of underlying surface. After we read in the normal vectors and construct TBN matrix(T, B, N as row vectors), we can transform these normal vectors into world space and do light calculation. It will look like a real bumpy surface under the illumination of light, although none of these vertices change it's position at all!
-        <div align="middle">
-            <table style="width:100%">
-                <tr align="center">
+
                     <td>
                         <img src="images/normal_mapping_tbn_vectors.png" align="middle" width="300px" />
                         <figcaption align="middle">Tangent space(N is normal vector of surface)</figcaption>
@@ -200,18 +193,7 @@
                 <br>
             </table>
         </div>
-    
-<!--     
-        <div align="middle">
-            <table style="width:100%">
-                <tr align="center">
-                    <td>
-                        <img src="images/normalvec-1.png" align="middle" width="800px" />
-                    </td>
-                </tr>
-                <br>
-            </table>
-        </div> -->
+        In OpenGL, normal vectors in normal maps are expressed in tangent space, which is a space local to the surface of a triangle. This relative coordinate system allows normal mapping to be correctly applied no matter the direction of underlying surface. After we read in the normal vectors and construct TBN matrix(T, B, N as row vectors), we can transform these normal vectors into world space and do light calculation. It will look like a real bumpy surface under the illumination of light, although none of these vertices change it's position at all!
 
         <h3>Parallax Mapping</h3>
         <p>
@@ -246,14 +228,7 @@
                 </table>
             </div>
             Steep parallax mapping takes multiple depth samples from 0 to 1, until we find a sampled depth value that is less than the depth value of the current layer(i.e. blue point is above purple point). The stopping point is then considered as the intersecion position for the vision direction and bumpy surface.<br>
-            <div align="middle">
-                <table style="width:100%">
-                    <tr align="center">
-                        
-                    </tr>
-                    <br>
-                </table>
-            </div>
+
             Parallax Occlusion Mapping takes this idea a step further. Instead of taking the texture coordinates of the first depth layer after a collision, we're going to linearly interpolate between the depth layer after and before the collision. This is similar to the idea of bilinear interpolation.<br><br>
             
             We've implemented all these three method in our code. The heigthmap is also automatically read in by Optifine from <a href="https://www.curseforge.com/minecraft/texture-packs/vanilla-pbr">Vanilla PBR</a>. In fact, height map is stored together with normal map in its fourth channel.
