@@ -12,6 +12,12 @@
             font-family: 'Open Sans', sans-serif;
             color: #121212;
         }
+        .flex-container {
+        display: flex;
+        justify-content: center; /* Horizontally center */
+        align-items: center; /* Vertically center */
+        height: 65vh; /* Set container height to full viewport height */
+    }
 
         h1,
         h2,
@@ -354,10 +360,10 @@
             <!-- Header -->
             <tr align="center">
                 <td>
-                    <img src="images/split_parallax_mapping.png" align="middle" width="500px" />
+                    <img src="images/split_parallax_mapping.png" align="middle" width="440px" height="250px"/>
                 </td>
                 <td>
-                    <img src="images/split_specular_highlights.png" align="middle" width="500px" />
+                    <img src="images/split_specular_highlights.png" align="middle" width="440px" height="250px"/>
                 </td>
             </tr>
             <tr align="center">
@@ -370,19 +376,23 @@
             </tr>
         </table>
     </div>
-    <p>Blocks in minecraft can appear to be flat, therefore we added parallax mapping which adds depth to the blocks.
-        Moreover, specular highlights adds a shine on objects lit by the sun based upon their material properties.</p>
+    <p>Blocks in minecraft can appear to be flat, therefore we added parallax mapping which adds depth to the blocks. Focus on the front blocks (gold and iron ores), you can see depth added on the right 
+        side of the split image, while the left side is flat. Moreover, specular highlights adds a shine on objects lit by the sun based upon their material properties.  Blocks like the (white) iron on the top right image will be
+        more shiny than before.  </p>
     <h2 align="middle">References</h2>
     <p>
         In order to get started programming our own shaders in Minecraft, we reference the Developer Resource through <a href="https://shaderlabs.org/wiki/Getting_Started">ShaderLABS</a>, a community where shaders
         information about Minecraft is shared. Through this, we also followed a <a href="https://github.com/saada2006/MinecraftShaderProgramming/tree/master"> tutorial </a> to get familiar with programming with OpenGL on Minecraft. <a href="https://learnopengl.com"> This </a> is also another extremely  helpful tutorial for OpenGL and all kinds of lighting methods. 
 
         <br><br>Minecraft renders its graphics in various pipelines.  Here we decided to follow the <a href="https://pastebin.com/aB5MJ7aN">Optifine Pipeline</a> which describes the order in which the game is rendered in (ie, terrain, entities, sunlight, shadows). 
-        Moreover, the document for Optifine can be found <a href="https://optifine.readthedocs.io/shaders_dev.html">here</a>. 
+        Moreover, the document for Optifine can be found <a href="https://optifine.readthedocs.io/shaders_dev.html">here</a>. <br>
+        <a href="https://github.com/shaderLABS/Base-330">The codebase we start from</a>
     </p>
-    <iframe height="480" width="500" 
+    <div class="flex-container"> 
+    <iframe height="480" width="500"  
     src="https://www.youtube.com/embed/LnKNY_YU_Cs"> 
 </iframe> 
+</div>
     <h2 align="middle">Contributions from each team member</h2>
     <h3>Brian Kim</h3>
     <p>Worked on Specular Mapping. Made the checkpoint video and checkpoint video slides, Made the final video, wrote the final deliverables.</p>
