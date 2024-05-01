@@ -37,9 +37,12 @@
         For example, the game does not take advantage of the normal map of each block texture, resulting in a flat texture
         for blocks like cobblestone or furnaces. Also, the game treats sunlight as an ambient light, and blocks facing away from the sun
         will have the same brightness as the blocks facing the sun. Our team wanted to enhance lighting and textures in minecraft so scenes look realistic. <br><br>
+        Building ontop of the basic shader structure provided by Optifine we implemented a number of visual improvements on the
+        game.
         We were able to bring in normal shading, where blocks facing away from the sun will look darker than blocks facing the sun. 
         We added shadows, and added realism through the shadows by accounting for shadow distortion and transparent blocks. 
-        We have used the normal maps of block textures and parallelex mapping to add depth of field to the textures of blocks. 
+        We have used the normal and height maps of block textures and parallax mapping to add depth to the textures
+        of blocks.
         Finally, we used specular highlights to make the reflection of sunlight in certain blocks more shiny and realistic.
     </p>
     <h2 align="middle">Technical approach</h2>
