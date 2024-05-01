@@ -8,17 +8,10 @@ uniform sampler2D lightmap;
 uniform sampler2D gtexture;
 uniform sampler2D normals;
 uniform sampler2D specular;
-uniform sampler2D depthtex0;
-uniform sampler2D depthtex1;
 uniform sampler2D shadowtex0;
 uniform sampler2D shadowtex1;
 uniform sampler2D shadowcolor0;
 uniform sampler2D noisetex;
-
-uniform mat4 gbufferProjectionInverse;
-uniform mat4 gbufferModelViewInverse;
-uniform mat4 shadowModelView;
-uniform mat4 shadowProjection;
 
 in vec2 lmcoord;
 in vec2 texcoord;
@@ -26,6 +19,7 @@ in vec4 glcolor;
 in vec3 normal;
 in vec3 bitangent, tangent;
 in vec3 viewDir;
+in vec2 screenCoord;
 in vec4 textureBounds;
 in vec2 singleTexSize;
 in vec4 shadowPos;
@@ -35,7 +29,7 @@ const int shadowMapResolution = 2048;
 const int noiseTextureResolution = 64;
 
 const float ambient = 0.02f;
-const vec3 dayLight = vec3(255, 160, 80) * 3.0 / 255.0;
+const vec3 dayLight = vec3(255, 160, 80) * 1.2 / 255.0;
 
 float visibiliity(in sampler2D shadowMap, in vec3 sampleCoords) {
 	return step(sampleCoords.z - 0.001f, texture(shadowMap, sampleCoords.xy).r);
@@ -99,18 +93,26 @@ vec3 getLightMapColor(in vec2 lightMap){
 
 vec3 computeSpecular(vec3 lightDirTS, vec3 viewDirTS, vec3 normalDirTS, vec2 specularInfo, vec3 lightColor){
 	vec3 reflectDirTS = reflect(lightDirTS, normalDirTS);
-	float specularIntensity = specularInfo.g * pow(max(dot(reflectDirTS, viewDirTS), 0.01), specularInfo.r * 64.0);
+	float specularIntensity = 3.0 * specularInfo.g * pow(max(dot(reflectDirTS, viewDirTS), 0.01), specularInfo.r * 64.0);
 	return lightColor * specularIntensity;
 }
 
-/* DRAWBUFFERS:012 */
+/* DRAWBUFFERS:0 */
 layout(location = 0) out vec4 color;
-layout(location = 1) out vec4 bufNormal;
-layout(location = 2) out vec4 buflmcoord;
 
 #include "include/parallax.glsl"
 
 void main() {
+	#ifdef SPLIT_DEMO
+	if (screenCoord.x < 0.0){
+		color = texture(gtexture, texcoord) * glcolor;
+		color *= texture(lightmap, lmcoord);
+		if (color.a < 0.1) {
+			discard;
+		}
+		return;
+	}
+	#endif
 	mat3 tbnMatrix = mat3(tangent.x, bitangent.x, normal.x,
 							tangent.y, bitangent.y, normal.y,
 							tangent.z, bitangent.z, normal.z);
