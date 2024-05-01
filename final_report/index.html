@@ -188,7 +188,7 @@
                 <br>
             </table>
         </div>
-        In OpenGL, normal vectors in normal maps are expressed in tangent space, which is a space local to the surface of a triangle. This relative coordinate system allows normal mapping to be correctly applied no matter the direction of underlying surface. After we read in the normal vectors and construct TBN matrix(T, B, N as row vectors), we can transform these normal vectors into world space and do light calculation.
+        In OpenGL, normal vectors in normal maps are expressed in tangent space, which is a space local to the surface of a triangle. This relative coordinate system allows normal mapping to be correctly applied no matter the direction of underlying surface. After we read in the normal vectors and construct TBN matrix(T, B, N as row vectors), we can transform these normal vectors into world space and do light calculation. It will look like a real bumpy surface under the illumination of light, although none of these vertices change it's position at all!
         <div align="middle">
             <table style="width:100%">
                 <tr align="center">
@@ -201,7 +201,7 @@
             </table>
         </div>
     
-    
+<!--     
         <div align="middle">
             <table style="width:100%">
                 <tr align="center">
@@ -211,20 +211,61 @@
                 </tr>
                 <br>
             </table>
-        </div>
+        </div> -->
+
+        <h3>Parallax Mapping</h3>
         <p>
-            [TODO]
-        </p>
-        <h3>Parallax Occlusion Mapping</h3>
-        <p>
-            [TODO]
+            Parallax Mapping is similar to Normal Mapping, but based on different principles.  It gives us a sense of depth, and if combined with Normal Mapping, it will create incredibly realistic result. The idea behind Parallax Mapping is to alter the texture coordinates in such a way that it looks like a fragment's surface is higher or lower than it actually is, all based on the view direction and a heightmap. 
+            <div align="middle">
+                <table style="width:100%">
+                    <tr align="center">
+                        <td>
+                            <img src="images/parallax_mapping_depth.png" align="middle" width="350px" />
+                            <figcaption align="middle">Basic Parallax Mapping</figcaption>
+                        </td>
+                    </tr>
+                    <br>
+                </table>
+            </div>
+            If the surface is even, our view direction will intersect with it at point A. But due to its unevenness, it actually intersect at point B. We want to offset the texture coordinates at fragment position A
+            in such a way that we get texture coordinates at point B. To approximate this, we derive a vector <strong>P</strong>, starting from point A and pointing in the opposite of viewing direction, with a length of H(A)(value of heighmap in point A). We then take <b>P</b>'s vector coordinates that align with the plane as the texture coordinate offset for point A.<br><br>
+            The method above is a very crude approximation to get to point B and do not look convincing. Instead, we also implemented two variations of Basic Parallax Mapping to get a better appearance: Steep Parallax Mapping and Parallax Occlusion Mapping.            <br>
+            <div align="middle">
+                <table style="width:100%">
+                    <tr align="center">
+                        <td>
+                            <img src="images/parallax_mapping_steep_parallax_mapping_diagram.png" align="middle" width="350px" />
+                            <figcaption align="middle">Steep Parallax Mapping</figcaption>
+                        </td>
+                    </tr>
+                    <br>
+                </table>
+            </div>
+            Steep parallax mapping takes multiple depth samples from 0 to 1, until we find a sampled depth value that is less than the depth value of the current layer(i.e. blue point is above purple point). The stopping point is then considered as the intersecion position for the vision direction and bumpy surface.<br>
+            <div align="middle">
+                <table style="width:100%">
+                    <tr align="center">
+                        <td>
+                            <img src="images/parallax_mapping_parallax_occlusion_mapping_diagram.png" align="middle" width="350px" />
+                            <figcaption align="middle">Steep Parallax Mapping</figcaption>
+                        </td>
+                    </tr>
+                    <br>
+                </table>
+            </div>
+            Parallax Occlusion Mapping takes this idea a step further. Instead of taking the texture coordinates of the first depth layer after a collision, we're going to linearly interpolate between the depth layer after and before the collision. This is similar to the idea of bilinear interpolation.<br><br>
+            
+            We've implemented all these three method in our code. The heigthmap is also automatically read in by Optifine from <a href="https://www.curseforge.com/minecraft/texture-packs/vanilla-pbr">Vanilla PBR</a>. In fact, height map is stored together with normal map in its fourth channel.
+            <br>
+           
+
         </p>
         <h3 align="middle">Problems Encountered & Our Solutions</h3>
         <h3 align="middle">Lessons Learned</h3>
         <p>
-            Overall, we were able to learn how to apply concepts we learned in class (Blinn Phong reflection, lighting, and glsl) 
-            and applying it to a real world video game. There were optifine primitives we had to read up on, and we had to learn how to translate 
-            between object space, world space, shadow space, and tangent space. We also learned to critically think about shading problems and
+            Overall, we were able to learn how to apply and extend concepts we learned in class (Blinn Phong reflection, lighting, and glsl) 
+            and applying it to a real world video game. We spent a considerable amount of time learning OpenGL's API, getting familiar with the GLSL programming language, and referencing Optifine's official documentation to implement the features we had in mind. We had to deal with complicated translation
+            between all kinds of coordinate system in Minecraft(object space, world space, view space,tangent space etc.) We also learned to critically think about shading problems and
             create solutions on how to make the scene look good. One example of this would be accounting for the shadow edge falloff, so that the shadows
             don't look blocky. We took a good look at the materials learned in class and learned to use other frameworks to apply our knowledge into 
             real world problems. 
@@ -335,10 +376,10 @@
     <h2 align="middle">References</h2>
     <p>
         In order to get started programming our own shaders in Minecraft, we reference the Developer Resource through <a href="https://shaderlabs.org/wiki/Getting_Started">ShaderLABS</a>, a community where shaders
-        information about Minecraft is shared. Through this, we also followed a <a href="https://github.com/saada2006/MinecraftShaderProgramming/tree/master"> tutorial </a> to get familiar with programming with OpenGL on Minecraft.  
+        information about Minecraft is shared. Through this, we also followed a <a href="https://github.com/saada2006/MinecraftShaderProgramming/tree/master"> tutorial </a> to get familiar with programming with OpenGL on Minecraft. <a href="https://learnopengl.com"> This </a> is also another extremly helpful tutorial for OpenGL and all kinds of lighting methods. 
 
-        <br><br>Minecraft renders its graphics in various pipelines.  Here we decided to follow the <a href=""https://pastebin.com/aB5MJ7aN">Optifine Pipeline</a> which describes the order in which the game is rendered in (ie, terrain, entities, sunlight, shadows). 
-        Moreover, the document for Optifine can be found  <a href="https://optifine.readthedocs.io/shaders_dev.html">here</a>. 
+        <br><br>Minecraft renders its graphics in various pipelines.  Here we decided to follow the <a href="https://pastebin.com/aB5MJ7aN">Optifine Pipeline</a> which describes the order in which the game is rendered in (ie, terrain, entities, sunlight, shadows). 
+        Moreover, the document for Optifine can be found <a href="https://optifine.readthedocs.io/shaders_dev.html">here</a>. 
     </p>
     <h2 align="middle">Contributions from each team member</h2>
     <h3>Brian Kim</h3>
