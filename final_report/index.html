@@ -237,6 +237,26 @@
 
         </p>
         <h3 align="middle">Problems Encountered & Our Solutions</h3>
+        <p>
+            Our implementation was originally built around performing nearly all shading calculations in what optifine calls the
+            composite layer. This was a global pass performed at the end and caused many objects aside from terrain to get
+            improperly drawn over. While a majority of them we deemed could be ignored, the handling of translucent objects
+            could not. The shadows of objects behind translucent objects (water, stained glas, etc) were being applied ontop of
+            the combined contribution of both the terrrain and translucent object infront of it. This caused visually
+            unsatisfying shadows along with certain desired shadows not rendering at all. This was solved by moving the
+            implementation fully into the gbuffers_terrain layer which handles the terrain and then the translucent block
+            shading in their own respective passes. <br><br>
+        
+            Another wierd bug we ran into was graphics driver specific issues of the parallax mapping depth values being scaled
+            by a large factor. As we never located the true cause of this a simple constant factor was multiplied to make the
+            two versions visually equivalent. <br><br>
+        
+            In parallax mapping, the code we use to wrap the texture of a block within its range on the texture atlas causes
+            blocks with invisible edges (grass, flowers, etc) to get incorrectly rounded back around. This causes an undesired
+            thin frame line around the edge. This was fixed simply by disabling the parallax code on textures without nonzero
+            heightmaps.
+        </p>
+
         <h3 align="middle">Lessons Learned</h3>
         <p>
             Overall, we were able to learn how to apply and extend concepts we learned in class (Blinn Phong reflection, lighting, and glsl) 
@@ -325,30 +345,31 @@
     <p>With normal shading, blocks facing away from the sun are darker than blocks facing towards the sun. As seen, the back of the house is darker as it does not get direct sunlight as opposed
         from the blocks on the mountain. In the vanilla version, there is no normal lighting, therefore blocks get the same color.
     </p>
-    <h3 style = "padding-bottom: 0px;">specular highlights +  parallax mapping [insert image below]</h3>
+    <h3 style="padding-bottom: 0px;">specular highlights + parallax mapping</h3>
     
     <div align="middle">
         <table style="width:100%">
             <!-- Header -->
             <tr align="center">
                 <td>
-                    <img src="images/temp.png" align="middle" width="500px" />
+                    <img src="images/split_parallax_mapping.png" align="middle" width="500px" />
                 </td>
                 <td>
-                    <img src="images/temp.png" align="middle" width="500px" />
+                    <img src="images/split_specular_highlights.png" align="middle" width="500px" />
                 </td>
             </tr>
             <tr align="center">
                 <th>
-                    <b>Vanilla</b>
+                    <b>Parallax Mapping Comparison</b>
                 </th>
                 <th>
-                    <b>With Shader</b>
+                    <b>Specullar Highlight Comparison</b>
                 </th>
             </tr>
         </table>
     </div>
-    <p>Blocks in minecraft can appear to be flat, therefore we added parallax mapping which adds depth to the blocks. Moreover, specular highlights adds a shin to objects that should be reflective.</p>
+    <p>Blocks in minecraft can appear to be flat, therefore we added parallax mapping which adds depth to the blocks.
+        Moreover, specular highlights adds a shine on objects lit by the sun based upon their material properties.</p>
     <h2 align="middle">References</h2>
     <p>
         In order to get started programming our own shaders in Minecraft, we reference the Developer Resource through <a href="https://shaderlabs.org/wiki/Getting_Started">ShaderLABS</a>, a community where shaders
