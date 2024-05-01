@@ -35,7 +35,7 @@
     <p>
         Minecraft was designed to be a lightweight game and was designed to have very simple textures and lighting. 
         For example, the game does not take advantage of the normal map of each block texture, resulting in a flat texture
-        for blocks like cobblestone or furnace. Also, the game treats sunlight as an ambient light, and blocks facing away from the sun
+        for blocks like cobblestone or furnaces. Also, the game treats sunlight as an ambient light, and blocks facing away from the sun
         will have the same brightness as the blocks facing the sun. Our team wanted to enhance lighting and textures in minecraft so scenes look realistic. <br><br>
         We were able to bring in normal shading, where blocks facing away from the sun will look darker than blocks facing the sun. 
         We added shadows, and added realism through the shadows by accounting for shadow distortion and transparent blocks. 
@@ -59,7 +59,7 @@
             </table>
         </div>
         <p>
-            We added a small bit of ambient light to make sure that blocks which face away from the sun doesn't look completly dark. 
+            We added a small bit of ambient light to make sure that blocks which face away from the sun don't look completely dark. 
         </p>
         <div align="middle">
             <table style="width:100%">
@@ -72,7 +72,7 @@
             </table>
         </div>
         <p>
-            Simply put, we were able to extract the world coordiante, texture coordinate, and the normal of the surface from the vertex shader. 
+            Simply put, we were able to extract the world coordinate, texture coordinate, and the normal of the surface from the vertex shader. 
             In the fragment shader, we can extract the texture of the biome and put the normal vector in the 0~1 range. 
         </p>
         <div align="middle">
@@ -103,15 +103,15 @@
         <p>
             The goal of Specular Highlights is that objects will look brighter from certain angles and this brightness will diminish as you move away.
             We achieve this through taking the dot product between the view vector (ray pointing to the eye from the sample) and the light reflected off
-            of the sample point. We can make this effect more pronounced by having a large shinyness factor. The value of the dot product multiplying will increase exponentially.
-            We also take into account the matness of the object. We won't expect wood to absorb light like what glass would.
+            of the sample point. We can make this effect more pronounced by having a large shininess factor. The value of the dot product multiplying will increase exponentially.
+            We also take into account how matte each objects are. We won't expect wood to absorb light like what glass would.
 
         </p>
         <p>[Todo]</p>
         <h3>Shadows</h3>
         <p>
-            To generate shadows, we first take the clip space coordinates that includes the depth texture taken from the eyes point of view, 
-            and convert it to clipspace -> view space -> worldspace -> shadowspace. 
+            To generate shadows, we first take the clip space coordinates that include the depth texture taken from the eyes point of view, 
+            and convert it to  clip space -> view space -> worldspace -> shadowspace. 
         </p>
         <div align="middle">
             <table style="width:100%">
@@ -140,7 +140,7 @@
             </table>
         </div>
         <p>
-            Shadows used in minecraft often don't account for falloff at the edges. The mostly look black and white.  
+            Shadows used in minecraft often don't account for falloff at the edges. They mostly look black and white.  
             Ideally, we want the shadow to be realistic (not black and white). We would ideally like the shadow's color to blend in with the background
             along the edges. To achieve this, we use a tactic similar to supersampling. When we sample shadow texture, we sample in a small box (shadow samples x shadow samples) wide. 
             We then average the colors, giving us a smooth shadow transition.
@@ -172,12 +172,12 @@
         </div>
         <p>
             The final consideration for shadows is transparent objects. We want the shadow to be textured differently (combine some colors from the environment)
-            if the blocks causing the shadodw are transparent. Optifine gives us shadowtex1, which only includes shadow textures for non-transparent blocks. 
+            if the blocks causing the shadow are transparent. Optifine gives us shadowtex1, which only includes shadow textures for non-transparent blocks. 
             We can also sample the block color with the texture of the shadow color. We can take a mix of the transmitted color and the original shadow color.
             Realize that shadowVisibility1 will be zero if the object is not transparent. 
         </p>
         <h3>Normal Mapping</h3>
-            Normal Mapping is a trick to make surfaces look more realistic. Take bricks for example, its surface is quite rough and bumpy, and there's lots of small cracks and holes on it. It will be insufficient to use a  per-surface normal to model this, instead, we use the per-fragment normal map privided by <a href="https://www.curseforge.com/minecraft/texture-packs/vanilla-pbr">Vanilla PBR</a> resource under the LabPBR Material Standard. Optifine will read in normal maps for each kind of blocks automatically for our use.
+            Normal Mapping is a trick to make surfaces look more realistic. Take bricks for example, its surface is quite rough and bumpy, and there's lots of small cracks and holes on it. It will be insufficient to use a  per-surface normal to model this, instead, we use the per-fragment normal map provided by <a href="https://www.curseforge.com/minecraft/texture-packs/vanilla-pbr">Vanilla PBR</a> resource under the LabPBR Material Standard. Optifine will read in normal maps for each kind of blocks automatically for our use.
         <div align="middle">
             <table style="width:100%">
                 <tr align="center">
@@ -197,7 +197,7 @@
 
         <h3>Parallax Mapping</h3>
         <p>
-            Parallax Mapping is similar to Normal Mapping, but based on different principles.  It gives us a sense of depth, and if combined with Normal Mapping, it will create incredibly realistic result. The idea behind Parallax Mapping is to alter the texture coordinates in such a way that it looks like a fragment's surface is higher or lower than it actually is, all based on the view direction and a heightmap. 
+            Parallax Mapping is similar to Normal Mapping, but based on different principles.  It gives us a sense of depth, and if combined with Normal Mapping, it will create incredibly realistic results. The idea behind Parallax Mapping is to alter the texture coordinates in such a way that it looks like a fragment's surface is higher or lower than it actually is, all based on the view direction and a heightmap. 
             <div align="middle">
                 <table style="width:100%">
                     <tr align="center">
@@ -209,8 +209,8 @@
                     <br>
                 </table>
             </div>
-            If the surface is even, our view direction will intersect with it at point A. But due to its unevenness, it actually intersect at point B. We want to offset the texture coordinates at fragment position A
-            in such a way that we get texture coordinates at point B. To approximate this, we derive a vector <strong>P</strong>, starting from point A and pointing in the opposite of viewing direction, with a length of H(A)(value of heighmap in point A). We then take <b>P</b>'s vector coordinates that align with the plane as the texture coordinate offset for point A.<br><br>
+            If the surface is even, our view direction will intersect with it at point A. But due to its unevenness, it actually intersects at point B. We want to offset the texture coordinates at fragment position A
+            in such a way that we get texture coordinates at point B. To approximate this, we derive a vector <strong>P</strong>, starting from point A and pointing in the opposite of viewing direction, with a length of H(A)(value of heightmap in point A). We then take <b>P</b>'s vector coordinates that align with the plane as the texture coordinate offset for point A.<br><br>
             The method above is a very crude approximation to get to point B and do not look convincing. Instead, we also implemented two variations of Basic Parallax Mapping to get a better appearance: Steep Parallax Mapping and Parallax Occlusion Mapping.            <br>
             <div align="middle">
                 <table style="width:100%">
@@ -227,11 +227,11 @@
                     <br>
                 </table>
             </div>
-            Steep parallax mapping takes multiple depth samples from 0 to 1, until we find a sampled depth value that is less than the depth value of the current layer(i.e. blue point is above purple point). The stopping point is then considered as the intersecion position for the vision direction and bumpy surface.<br>
+            Steep parallax mapping takes multiple depth samples from 0 to 1, until we find a sampled depth value that is less than the depth value of the current layer(i.e. blue point is above purple point). The stopping point is then considered as the intersection position for the vision direction and bumpy surface.<br>
 
             Parallax Occlusion Mapping takes this idea a step further. Instead of taking the texture coordinates of the first depth layer after a collision, we're going to linearly interpolate between the depth layer after and before the collision. This is similar to the idea of bilinear interpolation.<br><br>
             
-            We've implemented all these three method in our code. The heigthmap is also automatically read in by Optifine from <a href="https://www.curseforge.com/minecraft/texture-packs/vanilla-pbr">Vanilla PBR</a>. In fact, height map is stored together with normal map in its fourth channel.
+            We've implemented all these three methods in our code. The heightmap  is also automatically read in by Optifine from <a href="https://www.curseforge.com/minecraft/texture-packs/vanilla-pbr">Vanilla PBR</a>. In fact, the height map is stored together with the normal map in its fourth channel.
             <br>
            
 
@@ -260,8 +260,8 @@
         <h3 align="middle">Lessons Learned</h3>
         <p>
             Overall, we were able to learn how to apply and extend concepts we learned in class (Blinn Phong reflection, lighting, and glsl) 
-            and applying it to a real world video game. We spent a considerable amount of time learning OpenGL's API, getting familiar with the GLSL programming language, and referencing Optifine's official documentation to implement the features we had in mind. We had to deal with complicated translation
-            between all kinds of coordinate system in Minecraft(object space, world space, view space,tangent space etc.) We also learned to critically think about shading problems and
+            and apply it to a real world video game. We spent a considerable amount of time learning OpenGL's API, getting familiar with the GLSL programming language, and referencing Optifine's official documentation to implement the features we had in mind. We had to deal with complicated translation
+            between all kinds of coordinate systems in Minecraft(object space, world space, view space,tangent space etc.) We also learned to critically think about shading problems and
             create solutions on how to make the scene look good. One example of this would be accounting for the shadow edge falloff, so that the shadows
             don't look blocky. We took a good look at the materials learned in class and learned to use other frameworks to apply our knowledge into 
             real world problems. 
@@ -291,7 +291,7 @@
                 </tr>
             </table>
         </div>
-        <p>In the "barebone" version of Minecraft, there are no such things as shadows. This can be seen in the top left image above labeled "Vanilla". We added shadows that come from the sun. Some blocks in Minecraft are transparent - such as glass. We made sure that sunlight is able to go through transprent blocks. Pay attention to the floor on the shaders images, you can see
+        <p>In the "barebone" version of Minecraft, there are no such things as shadows. This can be seen in the top left image above labeled "Vanilla". We added shadows that come from the sun. Some blocks in Minecraft are transparent - such as glass. We made sure that sunlight is able to go through transparent blocks. Pay attention to the floor on the shader images, you can see
             that shadows are formed from the solid blocks, but light is passed through the glass blocks.
         </p>
 
@@ -343,7 +343,7 @@
         </table>
     </div>
     <p>With normal shading, blocks facing away from the sun are darker than blocks facing towards the sun. As seen, the back of the house is darker as it does not get direct sunlight as opposed
-        from the blocks on the mountain. In the vanilla version, there is no normal lighting, therefore blocks get the same color.
+        to the blocks on the mountain. In the vanilla version, there is no normal lighting, therefore blocks get the same color.
     </p>
     <h3 style="padding-bottom: 0px;">specular highlights + parallax mapping</h3>
     
@@ -373,7 +373,7 @@
     <h2 align="middle">References</h2>
     <p>
         In order to get started programming our own shaders in Minecraft, we reference the Developer Resource through <a href="https://shaderlabs.org/wiki/Getting_Started">ShaderLABS</a>, a community where shaders
-        information about Minecraft is shared. Through this, we also followed a <a href="https://github.com/saada2006/MinecraftShaderProgramming/tree/master"> tutorial </a> to get familiar with programming with OpenGL on Minecraft. <a href="https://learnopengl.com"> This </a> is also another extremly helpful tutorial for OpenGL and all kinds of lighting methods. 
+        information about Minecraft is shared. Through this, we also followed a <a href="https://github.com/saada2006/MinecraftShaderProgramming/tree/master"> tutorial </a> to get familiar with programming with OpenGL on Minecraft. <a href="https://learnopengl.com"> This </a> is also another extremely  helpful tutorial for OpenGL and all kinds of lighting methods. 
 
         <br><br>Minecraft renders its graphics in various pipelines.  Here we decided to follow the <a href="https://pastebin.com/aB5MJ7aN">Optifine Pipeline</a> which describes the order in which the game is rendered in (ie, terrain, entities, sunlight, shadows). 
         Moreover, the document for Optifine can be found <a href="https://optifine.readthedocs.io/shaders_dev.html">here</a>. 
@@ -384,6 +384,7 @@
     <h3>Yuxiang Jiang</h3>
     <p> Find some useful tutorials to share, help debugging with specular lighting and parallax mapping, write part of technical report.</p>
     <h3>Mark Nguyen</h3>
+    <p>Worked on debugging water shadow,  result and references of final technical report, and milestone powerpoint slides </p>
 
 </body>
 
