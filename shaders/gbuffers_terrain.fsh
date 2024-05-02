@@ -116,12 +116,23 @@ void main() {
 	mat3 tbnMatrix = mat3(tangent.x, bitangent.x, normal.x,
 							tangent.y, bitangent.y, normal.y,
 							tangent.z, bitangent.z, normal.z);
+	#ifdef PARALLAX
 	vec2 newCoord = parallaxMapping(texcoord, viewDir, normals, textureBounds, singleTexSize);
+	#ifdef SPLIT_PARALLAX
+	if (screenCoord.x < 0.0){
+		newCoord = texcoord;
+	}
+	#endif
+	#else
+	vec2 newCoord = texcoord;
+	#endif
 	color = texture(gtexture, newCoord) * glcolor;
 	if (color.a < 0.1) {
 		discard;
 	}
 	color.rgb = pow(color.rgb, vec3(2.2));
+
+	#ifdef NORMAL_MAPPING
 	vec3 normalMap = vec3(texture(normals, newCoord).xy, 0.0) * 2.0 - 1.0;
 	float ambientOcclusion = texture(normals, newCoord).z;
 	if (normalMap.x + normalMap.y > -1.999) {
@@ -135,12 +146,32 @@ void main() {
 	color.rgb *= ambientOcclusion * ambientOcclusion;
 
 	vec3 normalWorld = clamp(normalize(normalMap * tbnMatrix), vec3(-1.0), vec3(1.0));
-	vec3 lightMapColor = getLightMapColor(lmcoord);
+	#ifdef SPLIT_NORMAL_MAPPING
+	if (screenCoord.x < 0.0){
+		normalMap = tbnMatrix * normal;
+		normalWorld = normal;
+	}
+	#endif
+	#else
+	vec3 normalMap = tbnMatrix * normal;
+	vec3 normalWorld = normal;
+	#endif
+
 	vec3 sunDirWorld = normalize(sunPosition);
 	float normDotL = max(dot(normalWorld, sunDirWorld), 0.0f);
+	vec3 lightMapColor = getLightMapColor(lmcoord);
 	// Specular lighting
+	#ifdef SPECULAR
 	vec2 specularInfo = texture(specular, newCoord).rg;
 	vec3 specular = dayLight * computeSpecular(normalize(tbnMatrix * sunDirWorld), normalize(viewDir), normalMap, specularInfo, dayLight);
+	#ifdef SPLIT_SPECULAR
+	if (screenCoord.x < 0.0){
+		specular = vec3(0.0);
+	}
+	#endif
 	color.rgb *= (lightMapColor + (normDotL + specular) * getShadow(shadowPos) + ambient);
+	#else
+	color.rgb *= (lightMapColor + normDotL * getShadow(shadowPos) + ambient);
+	#endif
 	color.rgb = pow(color.rgb, vec3(1.0f / 2.2f));
 }
